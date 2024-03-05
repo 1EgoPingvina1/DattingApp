@@ -1,0 +1,66 @@
+
+<div class="row" >
+   <div class="col-4">
+      <div class="card">
+         <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}" class="card-img-top img-thumbnail">
+
+      <div class="card-body">
+         <div class="mb-2" *ngIf="(presenceService.onlineUsers$ | async)?.includes(member.userName)">
+            <i class="class fa fa-user-circle text-success"></i> В сети
+         </div>
+         <div>
+            <strong>Откуда:</strong>
+            <p>{{member.city}}, {{member.country}}</p>
+         </div>
+
+         <div>
+            <strong>Возраст:</strong>
+            <p>{{member.age}}</p>
+         </div>
+
+         <div>
+            <strong>Был(а) в сети:</strong>
+            <p>{{member.lastActive | timeago}}</p>
+         </div>
+
+         <div>
+            <strong>С нами:</strong>
+            <p>{{member.created | date: 'dd MMM YYYY'}}</p>
+         </div>
+      </div>
+
+      <div class="card-footer">
+         <div class="btn-group d-flex">
+            <button class="btn btn-danger">Нравится</button>
+            <button (click)="selectTab('Сообщения')" class="btn btn-success">Написать</button>
+         </div>
+      </div>
+      </div>
+      
+   </div>
+
+   <div class="col-8">
+      <tabset class="member-tabset" #memberTabs>
+         <tab heading="Обо мне" (selectTab)="onTabActivated($event)">
+            <h4>Введение</h4>
+            <p>{{member.introduction}}</p>
+            <h4>В поисках</h4>
+            <p>{{member.lookingFor}}</p>
+         </tab>
+
+         <tab heading="Интересы" (selectTab)="onTabActivated($event)">
+            <h4>Интересы</h4>
+            <p>{{member.interests}}</p>
+         </tab>
+
+         <tab heading="Фотографии" #photoTab="tab" (selectTab)="onTabActivated($event)">
+            <gallery *ngIf="photoTab.active" [items]="images" thumbPosition="left" class="gallery"></gallery>
+         </tab>
+
+         <tab heading="Сообщения" (selectTab)="onTabActivated($event)">
+            <app-member-messages [username]="member.userName"></app-member-messages>
+         </tab>
+
+      </tabset>
+   </div>
+</div>

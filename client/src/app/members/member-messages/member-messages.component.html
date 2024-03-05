@@ -1,0 +1,37 @@
+<div class="card">
+   <div class="card-body">
+      <div *ngIf="(messageService.messageThread$ | async)?.length === 0">
+         <h3 class="text-center text-muted">Нет сообщений</h3>
+      </div>
+
+      <ul #scrollMe style="overflow-y: scroll; height: 500px;" [scrollTop]="scrollMe.scrollHeight" *ngIf="(messageService.messageThread$ | async)!.length > 0" class="chat align-middle">
+         <li *ngFor="let message of (messageService.messageThread$ | async)">
+            <div class="message-container">
+               <span class="chat-img float-end">
+                  <img class="rounded-circle user-img" src="{{message.senderPhotoUrl || './assets/user.png'}}" alt="image of user">
+               </span>
+               <div class="chat-body">
+                  <div class="header">
+                     <span class="timestamp">{{message.messageSent | timeago}}</span>
+                     <span class="read-status" *ngIf="!message.dateRead && message.senderUsername !== username">(Непрочитанное)</span>
+                     <span class="read-status" *ngIf="message.dateRead && message.senderUsername !== username">(Прочитано {{message.dateRead  | timeago}})</span>
+                     <p>{{message.content}}</p>
+                  </div>
+               </div>
+            </div>
+         </li>
+      </ul>
+      
+   </div>
+
+   <div class="card-footer">
+      <form #messageForm="ngForm" (ngSubmit)="sendMessage()" autocomplete="off">
+         <div class="input-group">
+            <input name="messageContent" required [(ngModel)]="messageContent" type="text" class="form-control input-sm" placeholder="Введите сообщение...."/>
+            <div class="input-group-append">
+               <button class="btn btn-primary ms-2" type="submit" [disabled]="!messageForm.valid">Отправить</button>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>

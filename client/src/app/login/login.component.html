@@ -1,0 +1,15 @@
+<form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off" *ngIf="!(accountService.currentUser$ | async)">
+
+  <h3 id="logo">Log In</h3>
+
+  <label for="username">Username</label>
+  <input name="username" [(ngModel)]="model.username" class="form-control" type="text" placeholder="Имя пользователя">
+
+  <label for="password">Password</label>
+  <input name="password" [(ngModel)]="model.password" class="form-control mt-3" type="password" placeholder="Password">
+
+  <a class="forgot" href="#">Forgot Password?</a>
+
+  <input type="submit" name="submit" value="Sign In"/>
+
+</form>

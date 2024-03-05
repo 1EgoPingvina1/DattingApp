@@ -1,0 +1,38 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
+   <div class="container-fluid">
+      <a class="navbar-brand" routerLinkActive="active">Знакомься тут</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ng-container *ngIf="accountService.currentUser$ | async"> 
+               <li class="nav-item">
+                  <a class="nav-link" routerLink="/members" routerLinkActive="active">Знакомиться</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" routerLink="/lists" routerLinkActive="active">Нравятся</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" routerLink="/messages" routerLinkActive="active">Мессенджер</a>
+               </li>
+               <li class="nav-item" *appHasRole="['Admin','Moderator']">
+                  <a class="nav-link" routerLink="/admin" routerLinkActive="active">Для администратора</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" *appHasRole="['Admin','Moderator']" routerLink="/errors" routerLinkActive="active">Ошибки</a>
+               </li>
+            </ng-container>
+         </ul>
+         <div class="dropdown me-3" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+            <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo" class="me-3">
+            <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>{{user.knownAs}}</a>
+            <div class="dropdown-menu" *dropdownMenu>
+               <a class="dropdown-item" routerLink="/member/edit">Профиль</a>
+               <a class="dropdown-item" (click)="logout()">Выйти</a>
+            </div>
+         </div>
+      </div>
+   </div>
+</nav>

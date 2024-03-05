@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: datingapp_db
+    environment:
+        - SA_PASSWORD=0>?Xc+r6v5
+        - ACCEPT_EULA=Y
+    ports:
+        - "1433:1433"
+
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    container_name: datingapp_api
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+    depends_on:
+        - db
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Production
+        - "ConnectionStrings__DefaultConnection=Server=db;Database=datingappsqlserverbd;User Id=sa;Password=0>?Xc+r6v5;TrustServerCertificate=True;"   
+    ports:
+        - "8001:80"
+ 
